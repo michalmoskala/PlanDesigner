@@ -8,24 +8,19 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
+import java.util.HashMap;
+
 class ShiftSelector {
-    private static String string;
+    private static Connection connection;
 
-    static private String formatString(String source){
 
-        while(source.contains(","))
-        {
-            int i=source.indexOf(",");
-            source=source.substring(0,i)+"\n"+source.substring(i+1,source.length());
-        }
-
-        return source;
-    }
-
-    static String display(){
+    static Connection display(myButton mB){
 
         Stage window = new Stage();
+        Label l1=new Label("Kto?");
         TextArea textArea=new TextArea();
+        Label l2=new Label("Ile?");
+        TextArea textArea2=new TextArea();
 
         window.initModality(Modality.APPLICATION_MODAL);
         window.setTitle("Wybierz");
@@ -33,24 +28,22 @@ class ShiftSelector {
         window.setWidth(300);
         window.setHeight(300);
 
-        Label label1 = new Label("Wpisz numery ludzi na zmianach");
         Button closeButton1 = new Button ("OK");
         closeButton1.setOnAction(e-> {
             window.close();
-            string = formatString(textArea.getText());
+            connection=new Connection(mB.row, mB.column,WorkerHandler.findWorker(textArea.getText()),Integer.parseInt(textArea2.getText()));
         });
 
-        HBox mainlayout = new HBox(10);
 
         VBox layout = new VBox(10);
-        layout.getChildren().addAll(label1, textArea,closeButton1);
+        layout.getChildren().addAll(l1, textArea,l2,textArea2,closeButton1);
         layout.setAlignment(Pos.CENTER);
 
 
         Scene scene = new Scene(layout);
         window.setScene(scene);
         window.showAndWait();
-        return string;
+        return connection;
     }
 
 }
