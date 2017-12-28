@@ -109,7 +109,6 @@ public class Main extends Application implements EventHandler<ActionEvent>{
         borderPane.setTop(toolBar);
         borderPane.setCenter(gridPane);
 
-        //bottomString=new String();
         bottomText=new Label(bottomString);
         borderPane.setBottom(bottomText);
 
@@ -164,7 +163,7 @@ public class Main extends Application implements EventHandler<ActionEvent>{
         myButton mB= (myButton) event.getSource();
 
 
-        Connection input=ShiftSelector.display(mB);
+        Connection input=ShiftSelector.display(mB,workers);
         connections.add(input);
 
         for (Worker worker:workers) {

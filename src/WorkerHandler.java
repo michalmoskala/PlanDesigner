@@ -1,14 +1,23 @@
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.scene.control.Button;
 
 public class WorkerHandler implements EventHandler<ActionEvent> {
 
     @Override
     public void handle(ActionEvent event) {
 
-            Worker newWorker=WorkerSelector.addWorker();
-            Main.workers.add(newWorker);
-            Main.updateString();
+            Button a= (Button) event.getSource();
+
+
+            if(a.getText().equals("Dodaj"));
+            {
+                Worker newWorker = WorkerSelector.addWorker();
+                Main.workers.add(newWorker);
+                Main.updateString();
+            }
+
+
 
 
     }
