@@ -1,15 +1,61 @@
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+
+import java.util.ArrayList;
 
 class WorkerSelector {
     private static Worker worker;
 
+    static Worker removeWorker(myHashSet<Worker> workers){
+
+
+
+        Stage window = new Stage();
+        Label l1=new Label("Kto?");
+
+        ArrayList<String> arrayListWorkers=new ArrayList<>();
+
+        for (Worker worker:workers) {
+            arrayListWorkers.add(worker.getNick());
+        }
+
+        ObservableList<String> optionsWorkers = FXCollections.observableArrayList(arrayListWorkers);
+        ComboBox<String> comboWorkers=new ComboBox<>(optionsWorkers);
+
+        Button closeButton1 = new Button ("OK");
+
+        closeButton1.setOnAction(e-> {
+            window.close();
+            for (Worker worker1:workers)
+                if (worker1.getNick().equals(comboWorkers.getValue()))
+                    worker=worker1;
+        });
+
+        VBox vBox=new VBox(10);
+        vBox.getChildren().addAll(l1,comboWorkers,closeButton1);
+
+        window.initModality(Modality.APPLICATION_MODAL);
+        window.setTitle("Usun");
+        window.setWidth(200);
+        window.setHeight(200);
+
+        vBox.setAlignment(Pos.CENTER);
+
+        Scene scene = new Scene(vBox);
+        window.setScene(scene);
+        window.showAndWait();
+        return worker;
+    }
 
     static Worker addWorker(){
 
@@ -24,7 +70,7 @@ class WorkerSelector {
         textArea2.setMaxHeight(1);
 
         window.initModality(Modality.APPLICATION_MODAL);
-        window.setTitle("Wybierz");
+        window.setTitle("Dodaj");
         window.setWidth(700);
         window.setHeight(200);
 

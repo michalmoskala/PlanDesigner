@@ -9,24 +9,39 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 import java.util.HashSet;
+import java.util.Iterator;
 
 
 public class Main extends Application implements EventHandler<ActionEvent>{
 
     private static Label bottomText;
-    private Label[][] labels;
-    private int numberOfDays = 31;
+    static private Label[][] labels;
+    static private int numberOfDays = 31;
     private int width=1200;
     private int height=800;
     private myButton[][]buttons;
     private GridPane gridPane;
     private ToolBar toolBar;
     private BorderPane borderPane;
-    HashSet<Connection> connections=new HashSet<>();
+    static HashSet<Connection> connections=new HashSet<>();
     private Button add,remove;
     static myHashSet<Worker> workers=new myHashSet<>();
     static String bottomString;
 
+
+    static void handleMain(Worker worker){
+        workers.remove(worker);
+        updateString();
+
+
+        connections.removeIf(con -> con.worker.equals(worker));
+
+        cleanLabels();
+        for (Connection connection:connections) {
+            labels[connection.shift.row+1][connection.shift.column].setText(labels[connection.shift.row+1][connection.shift.column].getText().concat(connection.toString())+"\n");
+        }
+
+    }
     static void updateString(){
         bottomString=workers.toString();
         bottomText.setText(bottomString);
@@ -59,7 +74,7 @@ public class Main extends Application implements EventHandler<ActionEvent>{
 
     }
 
-    private void cleanLabels(){
+    static private void cleanLabels(){
         for (int j = 1; j < 4; j++) {
             for (int i = 0; i < numberOfDays; i++) {
 
@@ -178,7 +193,7 @@ public class Main extends Application implements EventHandler<ActionEvent>{
         cleanLabels();
 
         for (Connection connection:connections) {
-            labels[connection.shift.row+1][connection.shift.column].setText(labels[connection.shift.row+1][connection.shift.column].getText().concat(connection.display())+"\n");
+            labels[connection.shift.row+1][connection.shift.column].setText(labels[connection.shift.row+1][connection.shift.column].getText().concat(connection.toString())+"\n");
         }
 
     }

@@ -9,20 +9,25 @@ public class WorkerHandler implements EventHandler<ActionEvent> {
 
             Button a= (Button) event.getSource();
 
-
-            if(a.getText().equals("Dodaj"));
+            if(a.getText().equals("Dodaj"))
             {
                 Worker newWorker = WorkerSelector.addWorker();
                 Main.workers.add(newWorker);
                 Main.updateString();
             }
 
+            else
+            {
+                Worker removeWorker = WorkerSelector.removeWorker(Main.workers);
+
+                Main.handleMain(removeWorker);
 
 
+            }
 
     }
 
-    static public Worker findWorker(String nick){
+    public static Worker findWorker(String nick){
 
         for (Worker worker : Main.workers) {
             if (worker.nick.equals(nick))
