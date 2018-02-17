@@ -13,10 +13,10 @@ public class WorkerHandler implements EventHandler<ActionEvent> {
             {
                 Worker newWorker = WorkerSelector.addWorker();
                 Main.workers.add(newWorker);
-                Main.updateString();
+                Main.updateAllWorkers();
             }
 
-            else
+            else if (a.getText().equals("Usun"))
             {
                 Worker removeWorker = WorkerSelector.removeWorker(Main.workers);
 
@@ -25,12 +25,18 @@ public class WorkerHandler implements EventHandler<ActionEvent> {
 
             }
 
+            else if (a.getText().equals("Ustaw offset"))
+            {
+                Worker updatedWorker = WorkerSelector.updateOffset(Main.workers);
+                Main.updateWorker(updatedWorker);
+            }
+
     }
 
-    public static Worker findWorker(String nick){
+    static Worker findWorker(String nick){
 
         for (Worker worker : Main.workers) {
-            if (worker.nick.equals(nick))
+            if (worker.getNick().equals(nick))
                 return worker;
 
         }

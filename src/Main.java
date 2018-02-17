@@ -1,6 +1,4 @@
 import javafx.application.Application;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -8,30 +6,37 @@ import javafx.scene.control.*;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
-import java.util.HashSet;
-import java.util.Iterator;
+
+import java.util.*;
 
 
-public class Main extends Application implements EventHandler<ActionEvent>{
+public class Main extends Application{
 
     private static Label bottomText;
-    static private Label[][] labels;
+    static myLabel[][] labels;
     static private int numberOfDays = 31;
     private int width=1200;
-    private int height=800;
+    private int height=600;
     private myButton[][]buttons;
     private GridPane gridPane;
-    private ToolBar toolBar;
     private BorderPane borderPane;
+    private Button add,remove,offset;
     static HashSet<Connection> connections=new HashSet<>();
-    private Button add,remove;
     static myHashSet<Worker> workers=new myHashSet<>();
-    static String bottomString;
 
+    static void updateWorker(Worker worker){
+
+
+        workers.removeIf(work -> work.equals(worker));
+        workers.add(worker);
+        updateAllWorkers();
+
+
+    }
 
     static void handleMain(Worker worker){
         workers.remove(worker);
-        updateString();
+        updateAllWorkers();
 
 
         connections.removeIf(con -> con.worker.equals(worker));
@@ -42,9 +47,28 @@ public class Main extends Application implements EventHandler<ActionEvent>{
         }
 
     }
-    static void updateString(){
-        bottomString=workers.toString();
-        bottomText.setText(bottomString);
+    static void updateAllWorkers(){
+        for (Worker worker:workers) {
+            worker.resetMinutes();
+            for (Connection connection:connections) {
+                if (connection.worker==worker)
+                    worker.addMinutes(connection.minutes);
+            }
+
+        }
+
+
+        ArrayList<Worker> sorted = new ArrayList<>(workers);
+        sorted.sort(new WorkerComparator());
+
+
+        String ret= "";
+        for (Worker worker : sorted) {
+            ret=ret.concat(worker.toString());
+            ret=ret.concat("\n");
+        }
+
+        bottomText.setText(ret);
 
     }
 
@@ -58,7 +82,7 @@ public class Main extends Application implements EventHandler<ActionEvent>{
                 buttons[j][i]=new myButton();
                 buttons[j][i].setMinWidth(width / numberOfDays);
                 GridPane.setConstraints(buttons[j][i],i,2*j+1);
-                buttons[j][i].setOnAction(this);
+                buttons[j][i].setOnAction(new ButtonHandler());
                 buttons[j][i].setText("v");
                 buttons[j][i].column=i;
                 buttons[j][i].row=j;
@@ -67,14 +91,15 @@ public class Main extends Application implements EventHandler<ActionEvent>{
 
         add=new Button("Dodaj");
         remove=new Button("Usun");
+        offset = new Button("Ustaw offset");
 
         add.setOnAction(workerHandler);
         remove.setOnAction(workerHandler);
-
+        offset.setOnAction(workerHandler);
 
     }
 
-    static private void cleanLabels(){
+    static void cleanLabels(){
         for (int j = 1; j < 4; j++) {
             for (int i = 0; i < numberOfDays; i++) {
 
@@ -84,21 +109,28 @@ public class Main extends Application implements EventHandler<ActionEvent>{
         }
     }
 
+    static void clearDay(int shift, int day){
+        connections.removeIf(con -> con.shift.equals(new Shift(shift-1,day)));
+        updateAllWorkers();
+        labels[shift][day].setText("");
+
+    }
+
     private void LabelsSetup(){
-        labels = new Label[4][numberOfDays];
+        labels = new myLabel[4][numberOfDays];
 
         for (int i = 0; i < numberOfDays; i++) {
-            labels[0][i] = new Label(Integer.toString(i + 1));
-            labels[1][i] = new Label();
-            labels[2][i] = new Label();
-            labels[3][i] = new Label();
+            labels[0][i] = new myLabel(Integer.toString(i + 1),0,i);
+            labels[1][i] = new myLabel("",1,i);
+            labels[2][i] = new myLabel("",2,i);
+            labels[3][i] = new myLabel("",3,i);
 
         }
 
         for (int j = 0; j < 4; j++) {
             for (int i = 0; i < numberOfDays; i++) {
                 GridPane.setConstraints(labels[j][i], i, 2*j);
-                labels[j][i].setMinSize(width / numberOfDays, height/4);
+                labels[j][i].setMinSize(width / numberOfDays, height/5);
                 labels[j][i].setAlignment(Pos.CENTER);
 
             }
@@ -106,6 +138,14 @@ public class Main extends Application implements EventHandler<ActionEvent>{
 
         for (int i = 0; i < numberOfDays; i++) {
             labels[0][i].setMinSize(width / numberOfDays, 30);
+        }
+
+        for (int j = 1; j < 4; j++) {
+            for (int i = 0; i < numberOfDays; i++) {
+
+                labels[j][i].setOnMouseClicked(new LabelHandler());
+
+            }
         }
 
     }
@@ -119,12 +159,12 @@ public class Main extends Application implements EventHandler<ActionEvent>{
     private void BorderPaneSetup(){
         borderPane=new BorderPane();
 
-        toolBar = new ToolBar(add, remove);
+        ToolBar toolBar = new ToolBar(add, remove, offset);
 
         borderPane.setTop(toolBar);
         borderPane.setCenter(gridPane);
 
-        bottomText=new Label(bottomString);
+        bottomText=new Label();
         borderPane.setBottom(bottomText);
 
     }
@@ -173,30 +213,6 @@ public class Main extends Application implements EventHandler<ActionEvent>{
 
     }
 
-    @Override
-    public void handle(ActionEvent event) {
-        myButton mB= (myButton) event.getSource();
-
-
-        Connection input=ShiftSelector.display(mB,workers);
-        connections.add(input);
-
-        for (Worker worker:workers) {
-            worker.minutes=0;
-            for (Connection connection:connections) {
-                if (connection.worker==worker)
-                    worker.minutes+=connection.minutes;
-            }
-
-        }
-        updateString();
-        cleanLabels();
-
-        for (Connection connection:connections) {
-            labels[connection.shift.row+1][connection.shift.column].setText(labels[connection.shift.row+1][connection.shift.column].getText().concat(connection.toString())+"\n");
-        }
-
-    }
 
 
 
