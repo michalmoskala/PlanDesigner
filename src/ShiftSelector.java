@@ -10,6 +10,7 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.HashSet;
 
 class ShiftSelector {
@@ -26,6 +27,8 @@ class ShiftSelector {
         for (Worker worker:workers) {
             arrayListWorkers.add(worker.getNick());
         }
+
+        arrayListWorkers.sort(Comparator.naturalOrder());
 
         ObservableList<String> optionsWorkers = FXCollections.observableArrayList(arrayListWorkers);
         ComboBox<String> comboWorkers=new ComboBox<>(optionsWorkers);

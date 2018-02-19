@@ -9,6 +9,7 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 
 class WorkerSelector {
     private static Worker worker;
@@ -25,6 +26,7 @@ class WorkerSelector {
             arrayListWorkers.add(worker.getNick());
         }
 
+        arrayListWorkers.sort(Comparator.naturalOrder());
         ObservableList<String> optionsWorkers = FXCollections.observableArrayList(arrayListWorkers);
         ComboBox<String> comboWorkers=new ComboBox<>(optionsWorkers);
 
@@ -119,6 +121,7 @@ class WorkerSelector {
             arrayListWorkers.add(worker.getNick());
         }
 
+        arrayListWorkers.sort(Comparator.naturalOrder());
         ObservableList<String> optionsWorkers = FXCollections.observableArrayList(arrayListWorkers);
         ComboBox<String> comboWorkers=new ComboBox<>(optionsWorkers);
 

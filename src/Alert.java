@@ -2,15 +2,14 @@ import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
-public class Alert {
+class Alert {
     private static boolean ans;
 
-    public static boolean display(String title, String message){
+    static boolean display(String title, String message){
         Stage window = new Stage();
 
         window.initModality(Modality.APPLICATION_MODAL);
@@ -24,6 +23,7 @@ public class Alert {
         Button closeButton1 = new Button ("Zapisz zmiany");
         closeButton1.setOnAction(e-> {
             window.close();
+            Main.save("v1");
             ans = true;
         });
 
@@ -39,7 +39,6 @@ public class Alert {
             ans = false;
         });
 
-        HBox mainlayout = new HBox(10);
 
         VBox layout = new VBox(10);
         layout.getChildren().addAll(label1, closeButton1,closeButton2,closeButton3);
