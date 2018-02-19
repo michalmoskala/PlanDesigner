@@ -13,6 +13,9 @@ public class Worker {
         this.minutes = 0;
     }
 
+    public String toFile(){
+        return nick+";"+fullName+";"+offset;
+    }
 
     @Override
     public boolean equals(Object o) {
@@ -42,12 +45,19 @@ public class Worker {
         this.offset = 0;
     }
 
+    Worker(String nick,String fullName,String offset)
+    {
+        this.nick=nick;
+        this.fullName=fullName;
+        this.offset=Integer.parseInt(offset);
+    }
+
 
     @Override
     public String toString() {
 
         int time=offset+minutes;
-        return "(" + convertTime(offset) +") " + nick + "     " + convertTime(time);
+        return "(" + Helpers.convertTime(offset) +") " + nick + "     " + Helpers.convertTime(time);
 
     }
 
@@ -57,19 +67,7 @@ public class Worker {
 
     }
 
-    private String convertTime(int time)
-    {
-        String ret= "";
-        if (time<0)
-        {
-            ret = "-";
-            time=-time;
-        }
-        ret=ret.concat(time/60 + ":" + Integer.toString(time-(60*(time/60))));
 
-        return ret;
-
-    }
 
 
 }

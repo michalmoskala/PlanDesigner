@@ -63,7 +63,7 @@ class ShiftSelector {
         Button closeButton1 = new Button ("OK");
         closeButton1.setOnAction(e-> {
             window.close();
-            connection=new Connection(mB.row, mB.column,WorkerHandler.findWorker(comboWorkers.getValue()),comboHours.getValue()*60+comboMinutes.getValue());
+            connection=new Connection(mB.row, mB.column, Helpers.findWorker(comboWorkers.getValue()),comboHours.getValue()*60+comboMinutes.getValue());
         });
 
 

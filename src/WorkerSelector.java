@@ -63,7 +63,7 @@ class WorkerSelector {
         Button closeButton1 = new Button ("OK");
         closeButton1.setOnAction(e-> {
             window.close();
-            worker=WorkerHandler.findWorker(comboWorkers.getValue());
+            worker= Helpers.findWorker(comboWorkers.getValue());
             int offset = comboHours.getValue()*60+comboMinutes.getValue();
             if (radioButton.isSelected())
                 offset=-offset;

@@ -31,16 +31,8 @@ public class WorkerHandler implements EventHandler<ActionEvent> {
                 Main.updateWorker(updatedWorker);
             }
 
-    }
 
-    static Worker findWorker(String nick){
-
-        for (Worker worker : Main.workers) {
-            if (worker.getNick().equals(nick))
-                return worker;
-
-        }
-        return null;
 
     }
+
 }

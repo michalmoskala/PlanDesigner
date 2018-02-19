@@ -5,6 +5,7 @@ class myLabel extends Label {
         super(text);
         this.row = row;
         this.column = column;
+
     }
 
     int row,column;
