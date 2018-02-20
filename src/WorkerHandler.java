@@ -31,6 +31,12 @@ public class WorkerHandler implements EventHandler<ActionEvent> {
                 Main.updateWorker(updatedWorker);
             }
 
+            else if (a.getText().equals("Ustaw urlop"))
+            {
+                Worker updatedWorker = WorkerSelector.updateVacation(Main.workers);
+                Main.updateWorker(updatedWorker);
+            }
+
 
 
     }

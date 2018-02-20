@@ -3,6 +3,7 @@ public class Worker {
     private String fullName;
     private int minutes;
     private int offset;
+    private int vacation;
 
 
     void addMinutes(int add){
@@ -13,8 +14,8 @@ public class Worker {
         this.minutes = 0;
     }
 
-    public String toFile(){
-        return nick+";"+fullName+";"+offset;
+    String toFile(){
+        return nick+";"+fullName+";"+offset+";"+vacation;
     }
 
     @Override
@@ -35,6 +36,10 @@ public class Worker {
         return result;
     }
 
+    public void setVacation(int vacation) {
+        this.vacation = vacation;
+    }
+
     void setOffset(int offset) {
         this.offset = offset;
     }
@@ -42,22 +47,22 @@ public class Worker {
     Worker(String fullName, String nick) {
         this.fullName = fullName;
         this.nick = nick;
-        this.offset = 0;
     }
 
-    Worker(String nick,String fullName,String offset)
+    Worker(String nick,String fullName,String offset,String vacation)
     {
         this.nick=nick;
         this.fullName=fullName;
         this.offset=Integer.parseInt(offset);
+        this.vacation=Integer.parseInt(vacation);
     }
 
 
     @Override
     public String toString() {
 
-        int time=offset+minutes;
-        return "(" + Helpers.convertTime(offset) +") " + nick + "     " + Helpers.convertTime(time);
+        int time=offset+minutes+vacation;
+        return nick + "     " + Helpers.convertTime(time)+"   (Offset: " + Helpers.convertTime(offset) + ", Urlop: " + Helpers.convertTime(vacation) + ") ";
 
     }
 
@@ -66,8 +71,6 @@ public class Worker {
         return nick;
 
     }
-
-
 
 
 }

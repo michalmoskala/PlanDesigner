@@ -25,6 +25,7 @@ public class SetupWindow {
 
         Label label1 = new Label("Od jakiego dnia zaczyna sie ten miesiac?");
 
+        window.setOnCloseRequest(e->dayIndex=null);
 
         ArrayList<String> arrayListDays = new ArrayList<>();
         arrayListDays.add("Poniedzialek");

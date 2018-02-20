@@ -8,10 +8,10 @@ public class Connection {
 
     @Override
     public String toString(){
-        return worker.getNick() + "    " + Helpers.convertTime(minutes);
+        return worker.getNick() + ":  (" + Helpers.convertTime(minutes)+"}";
     }
 
-    public String toFile(){
+    String toFile(){
         return shift.row+";"+shift.column+";"+worker.getNick()+";"+minutes;
     }
 

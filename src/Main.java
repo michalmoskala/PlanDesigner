@@ -23,84 +23,10 @@ public class Main extends Application{
     static private myButton[][]buttons;
     private GridPane gridPane;
     private BorderPane borderPane;
-    private Button add,remove,offset,month,save,load;
+    private Button add,remove,offset,vacation,month,save,load;
     static HashSet<Connection> connections=new HashSet<>();
     static myHashSet<Worker> workers=new myHashSet<>();
     static Integer weekday=0;
-
-    static void load(){
-        try{
-            Worker worker;
-            File file = new File("Workers.txt");
-            FileReader fileReader = new FileReader(file);
-            BufferedReader bufferedReader = new BufferedReader(fileReader);
-            String line=bufferedReader.readLine();
-            System.out.println(line);
-            while  ((line = bufferedReader.readLine()) != null){
-
-                String[] words = line.split(";");
-                worker=new Worker(words[0],words[1],words[2]);
-                workers.add(worker);
-
-            }
-                fileReader.close();
-
-            Connection connection;
-            file = new File("Connections.txt");
-            fileReader = new FileReader(file);
-            bufferedReader = new BufferedReader(fileReader);
-            line=bufferedReader.readLine();
-            System.out.println(line);
-            while  ((line = bufferedReader.readLine()) != null){
-
-                String[] words = line.split(";");
-                connection=new Connection(words[0],words[1],words[2],words[3]);
-                connections.add(connection);
-
-            }
-            fileReader.close();
-
-            updateAllWorkers();
-            cleanLabels();
-            for (Connection connection1:connections) {
-                labels[connection1.shift.row+1][connection1.shift.column].setText(labels[connection1.shift.row+1][connection1.shift.column].getText().concat(connection1.toString())+"\n");
-            }
-
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    static void save(String header){
-
-        try {
-            PrintWriter out = new PrintWriter("Workers.txt");
-
-            out.println(header);
-            for(Worker worker : workers)
-
-                out.println(worker.toFile());
-
-            out.close();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
-
-        try {
-            PrintWriter out = new PrintWriter("Connections.txt");
-
-            out.println(header);
-            for (Connection connection:connections)
-
-                out.println(connection.toFile());
-
-            out.close();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
-
-    }
 
 
     static void setWeekday(Integer b){
@@ -176,6 +102,7 @@ public class Main extends Application{
         add=new Button("Dodaj");
         remove=new Button("Usun");
         offset = new Button("Ustaw offset");
+        vacation = new Button("Ustaw urlop");
         month = new Button("Wybierz dzien tygodnia");
         save = new Button("Zapisz");
         load = new Button("Wczytaj");
@@ -183,6 +110,7 @@ public class Main extends Application{
         add.setOnAction(workerHandler);
         remove.setOnAction(workerHandler);
         offset.setOnAction(workerHandler);
+        vacation.setOnAction(workerHandler);
         month.setOnAction(setupHandler);
         save.setOnAction(setupHandler);
         load.setOnAction(setupHandler);
@@ -249,7 +177,7 @@ public class Main extends Application{
     private void BorderPaneSetup(){
         borderPane=new BorderPane();
 
-        ToolBar toolBar = new ToolBar(add, remove, offset, month,save,load);
+        ToolBar toolBar = new ToolBar(add, remove, offset,vacation, month,save,load);
 
         borderPane.setTop(toolBar);
         borderPane.setCenter(gridPane);

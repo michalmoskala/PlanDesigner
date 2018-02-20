@@ -20,6 +20,7 @@ public class SetupHandler implements EventHandler<ActionEvent> {
             Main.updateAllWorkers();
             Main.cleanLabels();
 
+            if(!Main.connections.isEmpty())
             for (Connection connection : Main.connections) {
                 Main.labels[connection.shift.row + 1][connection.shift.column].setText(Main.labels[connection.shift.row + 1][connection.shift.column].getText().concat(connection.toString()) + "\n");
             }
@@ -34,12 +35,12 @@ public class SetupHandler implements EventHandler<ActionEvent> {
 
         else if(a.getText().equals("Zapisz"))
         {
-            Main.save("v1");
+            Helpers.save("v2");
         }
 
         else if(a.getText().equals("Wczytaj"))
         {
-            Main.load();
+            Helpers.load();
         }
 
     }
