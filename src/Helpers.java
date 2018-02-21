@@ -1,7 +1,21 @@
+
 import java.io.*;
 import java.util.HashSet;
 
 public class Helpers {
+
+    public static boolean isNumeric(String str)
+    {
+        try
+        {
+            double d = Double.parseDouble(str);
+        }
+        catch(NumberFormatException nfe)
+        {
+            return false;
+        }
+        return true;
+    }
 
 
     static public String convertTime(int time)
@@ -78,18 +92,18 @@ public class Helpers {
         }
     }
 
-    static void save(String header){
+    static void save(String header, String workersFilname, String connectionsFilename, Boolean isBackup){
 
         try {
 
-            File file = new File("Workers.txt");
-            if (file.exists())
+            File file = new File(workersFilname);
+            if (file.exists()&&!isBackup)
             {
                 //delete if exists
                 file.delete();
             }
 
-            PrintWriter out = new PrintWriter("Workers.txt");
+            PrintWriter out = new PrintWriter(workersFilname);
 
             out.println(header);
             for(Worker worker : Main.workers)
@@ -102,13 +116,13 @@ public class Helpers {
         }
 
         try {
-            File file = new File("Connections.txt");
-            if (file.exists())
+            File file = new File(connectionsFilename);
+            if (file.exists()&&!isBackup)
             {
                 //delete if exists
                 file.delete();
             }
-            PrintWriter out = new PrintWriter("Connections.txt");
+            PrintWriter out = new PrintWriter(connectionsFilename);
 
             out.println(header);
             for (Connection connection: Main.connections)

@@ -9,7 +9,6 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 import java.util.ArrayList;
-import java.util.Comparator;
 
 class WorkerSelector {
     private static Worker worker;
@@ -20,39 +19,32 @@ class WorkerSelector {
 
         window.setOnCloseRequest(e -> worker = null);
 
-        ArrayList<String> arrayListWorkers=new ArrayList<>();
+        ArrayList<Worker> arrayListWorkers=new ArrayList<>();
 
-        for (Worker worker:workers) {
-            arrayListWorkers.add(worker.getNick());
+        arrayListWorkers.addAll(workers);
+
+        arrayListWorkers.sort(new WorkerComparator());
+        ArrayList<String> arrayListStrings = new ArrayList<>();
+
+        for (Worker worker :arrayListWorkers){
+            arrayListStrings.add(worker.getNick());
         }
 
-        arrayListWorkers.sort(Comparator.naturalOrder());
-        ObservableList<String> optionsWorkers = FXCollections.observableArrayList(arrayListWorkers);
+        ObservableList<String> optionsWorkers = FXCollections.observableArrayList(arrayListStrings);
         ComboBox<String> comboWorkers=new ComboBox<>(optionsWorkers);
 
 
-        ArrayList<Integer> arrayListHours = new ArrayList<>();
+        ArrayList<Integer> arrayListDays = new ArrayList<>();
 
-        for (int i=0;i<=12;i++){
-            arrayListHours.add(i);
+        for (int i=0;i<=25;i++){
+            arrayListDays.add(i);
         }
 
-        ObservableList<Integer> optionsHours = FXCollections.observableArrayList(arrayListHours);
-        ComboBox<Integer> comboHours=new ComboBox<>(optionsHours);
+        ObservableList<Integer> optionsDays = FXCollections.observableArrayList(arrayListDays);
+        ComboBox<Integer> comboDays=new ComboBox<>(optionsDays);
 
 
-        ArrayList<Integer> arrayListMinutes = new ArrayList<>();
-
-        for (int i=0;i<60;i+=5){
-            arrayListMinutes.add(i);
-        }
-
-        ObservableList<Integer> optionsMinutes = FXCollections.observableArrayList(arrayListMinutes);
-        ComboBox<Integer> comboMinutes=new ComboBox<>(optionsMinutes);
-
-
-        Label l2=new Label("h");
-        Label l3=new Label("min");
+        Label l2=new Label("Ile dni?");
 
         window.initModality(Modality.APPLICATION_MODAL);
         window.setTitle("Wybierz");
@@ -64,25 +56,22 @@ class WorkerSelector {
         closeButton1.setOnAction(e-> {
             window.close();
             worker= Helpers.findWorker(comboWorkers.getValue());
-            int vacation = comboHours.getValue()*60+comboMinutes.getValue();
+            int vacation = comboDays.getValue()*455;
             worker.setVacation(vacation);
         });
 
 
         GridPane layout = new GridPane();
         closeButton1.setMinWidth(200);
-        comboHours.setMinWidth(200-l1.getWidth()-40);
-        comboMinutes.setMinWidth(200-l1.getWidth()-40);
+        comboDays.setMinWidth(200-l1.getWidth()-40);
         comboWorkers.setMinWidth(200-l1.getWidth()-40);
 
 
         layout.add(l1,0,0);
         layout.add(comboWorkers,1,0);
         layout.add(l2,0,1);
-        layout.add(comboHours,1,1);
-        layout.add(l3,0,2);
-        layout.add(comboMinutes,1,2);
-        layout.add(closeButton1,0,3,2,2);
+        layout.add(comboDays,1,1);
+        layout.add(closeButton1,0,2,2,2);
 
         l1.setAlignment(Pos.CENTER);
 
@@ -107,14 +96,18 @@ class WorkerSelector {
 
         window.setOnCloseRequest(e -> worker = null);
 
-        ArrayList<String> arrayListWorkers=new ArrayList<>();
+        ArrayList<Worker> arrayListWorkers=new ArrayList<>();
 
-        for (Worker worker:workers) {
-            arrayListWorkers.add(worker.getNick());
+        arrayListWorkers.addAll(workers);
+
+        arrayListWorkers.sort(new WorkerComparator());
+        ArrayList<String> arrayListStrings = new ArrayList<>();
+
+        for (Worker worker :arrayListWorkers){
+            arrayListStrings.add(worker.getNick());
         }
 
-        arrayListWorkers.sort(Comparator.naturalOrder());
-        ObservableList<String> optionsWorkers = FXCollections.observableArrayList(arrayListWorkers);
+        ObservableList<String> optionsWorkers = FXCollections.observableArrayList(arrayListStrings);
         ComboBox<String> comboWorkers=new ComboBox<>(optionsWorkers);
 
 
@@ -202,14 +195,18 @@ class WorkerSelector {
         Label l1=new Label("Kto?");
         window.setOnCloseRequest(e -> worker = null);
 
-        ArrayList<String> arrayListWorkers=new ArrayList<>();
+        ArrayList<Worker> arrayListWorkers=new ArrayList<>();
 
-        for (Worker worker:workers) {
-            arrayListWorkers.add(worker.getNick());
+        arrayListWorkers.addAll(workers);
+
+        arrayListWorkers.sort(new WorkerComparator());
+        ArrayList<String> arrayListStrings = new ArrayList<>();
+
+        for (Worker worker :arrayListWorkers){
+            arrayListStrings.add(worker.getNick());
         }
 
-        arrayListWorkers.sort(Comparator.naturalOrder());
-        ObservableList<String> optionsWorkers = FXCollections.observableArrayList(arrayListWorkers);
+        ObservableList<String> optionsWorkers = FXCollections.observableArrayList(arrayListStrings);
         ComboBox<String> comboWorkers=new ComboBox<>(optionsWorkers);
 
         Button closeButton1 = new Button ("OK");

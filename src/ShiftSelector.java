@@ -10,7 +10,6 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.HashSet;
 
 class ShiftSelector {
@@ -22,15 +21,17 @@ class ShiftSelector {
         Stage window = new Stage();
         Label l1=new Label("Kto?");
 
-        ArrayList<String> arrayListWorkers=new ArrayList<>();
+        ArrayList<Worker> arrayListWorkers=new ArrayList<>(workers);
 
-        for (Worker worker:workers) {
-            arrayListWorkers.add(worker.getNick());
+
+        arrayListWorkers.sort(new WorkerComparator());
+        ArrayList<String> arrayListStrings = new ArrayList<>();
+
+        for (Worker worker :arrayListWorkers){
+            arrayListStrings.add(worker.getNick());
         }
 
-        arrayListWorkers.sort(Comparator.naturalOrder());
-
-        ObservableList<String> optionsWorkers = FXCollections.observableArrayList(arrayListWorkers);
+        ObservableList<String> optionsWorkers = FXCollections.observableArrayList(arrayListStrings);
         ComboBox<String> comboWorkers=new ComboBox<>(optionsWorkers);
 
 
@@ -53,6 +54,8 @@ class ShiftSelector {
         ObservableList<Integer> optionsMinutes = FXCollections.observableArrayList(arrayListMinutes);
         ComboBox<Integer> comboMinutes=new ComboBox<>(optionsMinutes);
 
+        comboHours.getSelectionModel().select(7);
+        comboMinutes.getSelectionModel().select(7);
 
         Label l2=new Label("h");
         Label l3=new Label("min");

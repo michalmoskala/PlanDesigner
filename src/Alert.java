@@ -23,7 +23,7 @@ class Alert {
         Button closeButton1 = new Button ("Zapisz zmiany");
         closeButton1.setOnAction(e-> {
             window.close();
-            Helpers.save("v2");
+            Helpers.save("v3","Workers.txt","Connections.txt",false);
             ans = true;
         });
 

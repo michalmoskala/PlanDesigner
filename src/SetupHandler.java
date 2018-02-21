@@ -14,16 +14,21 @@ public class SetupHandler implements EventHandler<ActionEvent> {
 
 
             Connection input = ShiftSelector.display(mB, Main.workers);
-            Main.connections.add(input);
+
+            if(input!=null) {
+                Main.connections.add(input);
 
 
-            Main.updateAllWorkers();
-            Main.cleanLabels();
+                Main.updateAllWorkers();
+                Main.cleanLabels();
 
-            if(!Main.connections.isEmpty())
-            for (Connection connection : Main.connections) {
-                Main.labels[connection.shift.row + 1][connection.shift.column].setText(Main.labels[connection.shift.row + 1][connection.shift.column].getText().concat(connection.toString()) + "\n");
+                if (!Main.connections.isEmpty())
+                    for (Connection connection : Main.connections) {
+                        Main.labels[connection.shift.row + 1][connection.shift.column].setText(Main.labels[connection.shift.row + 1][connection.shift.column].getText().concat(connection.toString()) + "\n");
+                    }
             }
+
+            Helpers.save("--------","bworkers.txt","bcons.txt",true);
         }
 
         else if(a.getText().equals("Wybierz dzien tygodnia"))
@@ -35,7 +40,7 @@ public class SetupHandler implements EventHandler<ActionEvent> {
 
         else if(a.getText().equals("Zapisz"))
         {
-            Helpers.save("v2");
+            Helpers.save("v3","Workers.txt","Connections.txt",false);
         }
 
         else if(a.getText().equals("Wczytaj"))
