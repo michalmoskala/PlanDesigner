@@ -1,5 +1,7 @@
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
+package Display;
+
+import Processing.Helpers;
+import Types.Worker;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
@@ -8,43 +10,19 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
-import java.util.ArrayList;
+import java.util.HashSet;
 
-class WorkerSelector {
+public class WorkerSelector {
     private static Worker worker;
 
-    static Worker updateVacation(myHashSet<Worker> workers){
+    public static Worker updateVacation(HashSet<Worker> workers){
         Stage window = new Stage();
         Label l1=new Label("Kto?");
-
-        window.setOnCloseRequest(e -> worker = null);
-
-        ArrayList<Worker> arrayListWorkers=new ArrayList<>();
-
-        arrayListWorkers.addAll(workers);
-
-        arrayListWorkers.sort(new WorkerComparator());
-        ArrayList<String> arrayListStrings = new ArrayList<>();
-
-        for (Worker worker :arrayListWorkers){
-            arrayListStrings.add(worker.getNick());
-        }
-
-        ObservableList<String> optionsWorkers = FXCollections.observableArrayList(arrayListStrings);
-        ComboBox<String> comboWorkers=new ComboBox<>(optionsWorkers);
-
-
-        ArrayList<Integer> arrayListDays = new ArrayList<>();
-
-        for (int i=0;i<=25;i++){
-            arrayListDays.add(i);
-        }
-
-        ObservableList<Integer> optionsDays = FXCollections.observableArrayList(arrayListDays);
-        ComboBox<Integer> comboDays=new ComboBox<>(optionsDays);
-
-
         Label l2=new Label("Ile dni?");
+
+        ComboBox<String> comboWorkers= ViewHelpers.prepareComboBoxString(workers,l1.getWidth());
+        ComboBox<Integer> comboDays= ViewHelpers.prepareComboBoxInteger(25,1,l1.getWidth());
+
 
         window.initModality(Modality.APPLICATION_MODAL);
         window.setTitle("Wybierz");
@@ -63,8 +41,6 @@ class WorkerSelector {
 
         GridPane layout = new GridPane();
         closeButton1.setMinWidth(200);
-        comboDays.setMinWidth(200-l1.getWidth()-40);
-        comboWorkers.setMinWidth(200-l1.getWidth()-40);
 
 
         layout.add(l1,0,0);
@@ -74,15 +50,9 @@ class WorkerSelector {
         layout.add(closeButton1,0,2,2,2);
 
         l1.setAlignment(Pos.CENTER);
+        layout= ViewHelpers.setupLayout(layout);
 
-        layout.setVgap(10);
-        layout.setHgap(10);
-
-        layout.setAlignment(Pos.CENTER);
-
-        layout.autosize();
-
-
+        window.setOnCloseRequest(e -> worker = null);
         Scene scene = new Scene(layout);
         window.setScene(scene);
         window.showAndWait();
@@ -90,51 +60,19 @@ class WorkerSelector {
 
     }
 
-    static Worker updateOffset(myHashSet<Worker> workers){
+    public static Worker updateOffset(HashSet<Worker> workers){
         Stage window = new Stage();
         Label l1=new Label("Kto?");
-
-        window.setOnCloseRequest(e -> worker = null);
-
-        ArrayList<Worker> arrayListWorkers=new ArrayList<>();
-
-        arrayListWorkers.addAll(workers);
-
-        arrayListWorkers.sort(new WorkerComparator());
-        ArrayList<String> arrayListStrings = new ArrayList<>();
-
-        for (Worker worker :arrayListWorkers){
-            arrayListStrings.add(worker.getNick());
-        }
-
-        ObservableList<String> optionsWorkers = FXCollections.observableArrayList(arrayListStrings);
-        ComboBox<String> comboWorkers=new ComboBox<>(optionsWorkers);
-
-
-        ArrayList<Integer> arrayListHours = new ArrayList<>();
-
-        for (int i=0;i<=12;i++){
-            arrayListHours.add(i);
-        }
-
-        ObservableList<Integer> optionsHours = FXCollections.observableArrayList(arrayListHours);
-        ComboBox<Integer> comboHours=new ComboBox<>(optionsHours);
-
-
-        ArrayList<Integer> arrayListMinutes = new ArrayList<>();
-
-        for (int i=0;i<60;i+=5){
-            arrayListMinutes.add(i);
-        }
-
-        ObservableList<Integer> optionsMinutes = FXCollections.observableArrayList(arrayListMinutes);
-        ComboBox<Integer> comboMinutes=new ComboBox<>(optionsMinutes);
-
-
         Label l2=new Label("h");
         Label l3=new Label("min");
         Label l4=new Label("Ujemne?");
         RadioButton radioButton=new RadioButton();
+
+        window.setOnCloseRequest(e -> worker = null);
+
+        ComboBox<String> comboWorkers = ViewHelpers.prepareComboBoxString(workers,l1.getWidth());
+        ComboBox<Integer> comboHours = ViewHelpers.prepareComboBoxInteger(12,1,l1.getWidth());
+        ComboBox<Integer> comboMinutes = ViewHelpers.prepareComboBoxInteger(60,5,l1.getWidth());
 
         window.initModality(Modality.APPLICATION_MODAL);
         window.setTitle("Wybierz");
@@ -152,13 +90,8 @@ class WorkerSelector {
             worker.setOffset(offset);
         });
 
-
         GridPane layout = new GridPane();
         closeButton1.setMinWidth(200);
-        comboHours.setMinWidth(200-l1.getWidth()-40);
-        comboMinutes.setMinWidth(200-l1.getWidth()-40);
-        comboWorkers.setMinWidth(200-l1.getWidth()-40);
-
 
         layout.add(l1,0,0);
         layout.add(comboWorkers,1,0);
@@ -172,13 +105,7 @@ class WorkerSelector {
 
         l1.setAlignment(Pos.CENTER);
 
-        layout.setVgap(10);
-        layout.setHgap(10);
-
-        layout.setAlignment(Pos.CENTER);
-
-        layout.autosize();
-
+        layout = ViewHelpers.setupLayout(layout);
 
         Scene scene = new Scene(layout);
         window.setScene(scene);
@@ -187,29 +114,12 @@ class WorkerSelector {
 
     }
 
-    static Worker removeWorker(myHashSet<Worker> workers){
-
-
+    public static Worker removeWorker(HashSet<Worker> workers){
 
         Stage window = new Stage();
         Label l1=new Label("Kto?");
-        window.setOnCloseRequest(e -> worker = null);
-
-        ArrayList<Worker> arrayListWorkers=new ArrayList<>();
-
-        arrayListWorkers.addAll(workers);
-
-        arrayListWorkers.sort(new WorkerComparator());
-        ArrayList<String> arrayListStrings = new ArrayList<>();
-
-        for (Worker worker :arrayListWorkers){
-            arrayListStrings.add(worker.getNick());
-        }
-
-        ObservableList<String> optionsWorkers = FXCollections.observableArrayList(arrayListStrings);
-        ComboBox<String> comboWorkers=new ComboBox<>(optionsWorkers);
-
         Button closeButton1 = new Button ("OK");
+        ComboBox<String> comboWorkers=ViewHelpers.prepareComboBoxString(workers,0);
 
         closeButton1.setOnAction(e-> {
             window.close();
@@ -225,7 +135,7 @@ class WorkerSelector {
         window.setTitle("Usun");
         window.setWidth(200);
         window.setHeight(200);
-
+        window.setOnCloseRequest(e -> worker = null);
         vBox.setAlignment(Pos.CENTER);
 
         Scene scene = new Scene(vBox);
@@ -234,7 +144,7 @@ class WorkerSelector {
         return worker;
     }
 
-    static Worker addWorker(){
+    public static Worker addWorker(){
 
         Stage window = new Stage();
         TextArea textArea=new TextArea();
@@ -242,7 +152,6 @@ class WorkerSelector {
 
         textArea.setMaxWidth(200);
         textArea.setMaxHeight(1);
-
         textArea2.setMinWidth(40);
         textArea2.setMaxHeight(1);
 
@@ -250,7 +159,6 @@ class WorkerSelector {
         window.setTitle("Dodaj");
         window.setWidth(700);
         window.setHeight(200);
-        window.setOnCloseRequest(e -> worker = null);
 
         Label label1 = new Label("Imię i Nazwisko");
         Label label2 = new Label("Nickname");
@@ -262,7 +170,6 @@ class WorkerSelector {
 
 
         label1.setMinSize((double)label1.getText().length(),1);
-
 
         GridPane layout = new GridPane();
 
@@ -278,6 +185,8 @@ class WorkerSelector {
         GridPane.setConstraints(closeButton1,1,2);
 
         layout.getChildren().addAll(label1, textArea,label2, textArea2,closeButton1);
+
+        window.setOnCloseRequest(e -> worker = null);
 
 
         Scene scene = new Scene(layout);

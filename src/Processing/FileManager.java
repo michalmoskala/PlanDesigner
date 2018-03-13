@@ -1,53 +1,18 @@
+package Processing;
+
+import Display.MainView;
+import Types.Connection;
+import Types.Worker;
 
 import java.io.*;
 import java.util.HashSet;
 
-public class Helpers {
-
-    public static boolean isNumeric(String str)
-    {
-        try
-        {
-            double d = Double.parseDouble(str);
-        }
-        catch(NumberFormatException nfe)
-        {
-            return false;
-        }
-        return true;
-    }
-
-
-    static public String convertTime(int time)
-    {
-        String ret= "";
-        if (time<0)
-        {
-            ret = "-";
-            time=-time;
-        }
-        ret=ret.concat(time/60 + ":" + Integer.toString(time-(60*(time/60))));
-
-        return ret;
-
-    }
-
-    static Worker findWorker(String nick){
-
-        for (Worker worker : Main.workers) {
-            if (worker.getNick().equals(nick))
-                return worker;
-
-        }
-        return null;
-
-    }
-
-    static void load(){
+public class FileManager {
+    public static void load(){
         try{
 
-            Main.connections=new HashSet<>();
-            Main.workers=new myHashSet<>();
+            Data.connections=new HashSet<>();
+            Data.workers=new HashSet<>();
 
             Worker worker;
             File file = new File("Workers.txt");
@@ -60,7 +25,7 @@ public class Helpers {
 
                 String[] words = line.split(";");
                 worker=new Worker(words[0],words[1],words[2],words[3]);
-                Main.workers.add(worker);
+                Data.workers.add(worker);
 
             }
                 fileReader.close();
@@ -75,16 +40,13 @@ public class Helpers {
 
                 String[] words = line.split(";");
                 connection=new Connection(words[0],words[1],words[2],words[3]);
-                Main.connections.add(connection);
+                Data.connections.add(connection);
 
             }
             fileReader.close();
 
-            Main.updateAllWorkers();
-            Main.cleanLabels();
-            for (Connection connection1: Main.connections) {
-                Main.labels[connection1.shift.row+1][connection1.shift.column].setText(Main.labels[connection1.shift.row+1][connection1.shift.column].getText().concat(connection1.toString())+"\n");
-            }
+            MainView.updateAllWorkers();
+            MainView.updateLabels();
 
 
         } catch (IOException e) {
@@ -92,7 +54,7 @@ public class Helpers {
         }
     }
 
-    static void save(String header, String workersFilname, String connectionsFilename, Boolean isBackup){
+    public static void save(String header, String workersFilname, String connectionsFilename, Boolean isBackup){
 
         try {
 
@@ -106,7 +68,7 @@ public class Helpers {
             PrintWriter out = new PrintWriter(workersFilname);
 
             out.println(header);
-            for(Worker worker : Main.workers)
+            for(Worker worker : Data.workers)
 
                 out.println(worker.toFile());
 
@@ -125,7 +87,7 @@ public class Helpers {
             PrintWriter out = new PrintWriter(connectionsFilename);
 
             out.println(header);
-            for (Connection connection: Main.connections)
+            for (Connection connection: Data.connections)
 
                 out.println(connection.toFile());
 
@@ -135,8 +97,4 @@ public class Helpers {
         }
 
     }
-
-
-
-
 }

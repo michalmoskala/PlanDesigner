@@ -1,7 +1,21 @@
+package Types;
+
 public class Shift {
     int row;
     int column;
 
+    public Shift(int row, int column) {
+        this.row = row;
+        this.column = column;
+    }
+
+    public int getRow() {
+        return row;
+    }
+
+    public int getColumn() {
+        return column;
+    }
 
     @Override
     public boolean equals(Object o) {
@@ -20,10 +34,7 @@ public class Shift {
         return result;
     }
 
-    Shift(int row, int column) {
-        this.row = row;
-        this.column = column;
-    }
+
 }
 
 

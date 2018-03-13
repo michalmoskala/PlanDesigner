@@ -1,3 +1,7 @@
+package Types;
+
+import Processing.Helpers;
+
 public class Worker {
     private String nick;
     private String fullName;
@@ -6,15 +10,15 @@ public class Worker {
     private int vacation;
 
 
-    void addMinutes(int add){
+    public void addMinutes(int add){
         this.minutes+=add;
     }
 
-    void resetMinutes() {
+    public void resetMinutes() {
         this.minutes = 0;
     }
 
-    String toFile(){
+    public String toFile(){
         return nick+";"+fullName+";"+offset+";"+vacation;
     }
 
@@ -40,16 +44,16 @@ public class Worker {
         this.vacation = vacation;
     }
 
-    void setOffset(int offset) {
+    public void setOffset(int offset) {
         this.offset = offset;
     }
 
-    Worker(String fullName, String nick) {
+    public Worker(String fullName, String nick) {
         this.fullName = fullName;
         this.nick = nick;
     }
 
-    Worker(String nick,String fullName,String offset,String vacation)
+    public Worker(String nick, String fullName, String offset, String vacation)
     {
         this.nick=nick;
         this.fullName=fullName;
@@ -66,7 +70,7 @@ public class Worker {
 
     }
 
-    String getNick(){
+    public String getNick(){
 
         return nick;
 

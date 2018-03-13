@@ -1,3 +1,9 @@
+package Handlers;
+
+import Processing.Data;
+import Types.Worker;
+import Display.WorkerSelector;
+import Display.MainView;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.control.Button;
@@ -13,33 +19,33 @@ public class WorkerHandler implements EventHandler<ActionEvent> {
             {
                 Worker newWorker = WorkerSelector.addWorker();
                 if (newWorker!=null) {
-                    Main.workers.add(newWorker);
-                    Main.updateAllWorkers();
+                    Data.workers.add(newWorker);
+                    MainView.updateAllWorkers();
                 }
             }
 
             else if (a.getText().equals("Usun"))
             {
-                Worker removeWorker = WorkerSelector.removeWorker(Main.workers);
+                Worker removeWorker = WorkerSelector.removeWorker(Data.workers);
 
                 if(removeWorker!=null)
-                    Main.handleMain(removeWorker);
+                    Data.removeWorker(removeWorker);
 
 
             }
 
             else if (a.getText().equals("Ustaw offset"))
             {
-                Worker updatedWorker = WorkerSelector.updateOffset(Main.workers);
+                Worker updatedWorker = WorkerSelector.updateOffset(Data.workers);
                 if(updatedWorker!=null)
-                    Main.updateWorker(updatedWorker);
+                    Data.updateWorker(updatedWorker);
             }
 
             else if (a.getText().equals("Ustaw urlop"))
             {
-                Worker updatedWorker = WorkerSelector.updateVacation(Main.workers);
+                Worker updatedWorker = WorkerSelector.updateVacation(Data.workers);
                 if(updatedWorker!=null)
-                    Main.updateWorker(updatedWorker);
+                    Data.updateWorker(updatedWorker);
             }
 
 

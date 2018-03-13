@@ -1,4 +1,6 @@
+package Processing;
 
+import Types.Worker;
 
 import java.util.Comparator;
 

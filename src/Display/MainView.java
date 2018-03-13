@@ -1,3 +1,12 @@
+package Display;
+
+import Processing.*;
+import Types.Connection;
+import Types.Shift;
+import Types.Worker;
+import Handlers.LabelHandler;
+import Handlers.SetupHandler;
+import Handlers.WorkerHandler;
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -12,72 +21,43 @@ import javafx.stage.Stage;
 import java.util.*;
 
 
-public class Main extends Application{
+public class MainView extends Application{
 
     private static Label bottomText;
-    static myLabel[][] labels;
-    static private int numberOfDays = 31;
+    private static myLabel[][] labels;
+    private static myButton[][]buttons;
+    private static int numberOfDays = 31;
     private int width=1200;
     private int height=600;
-    static private myButton[][]buttons;
     private GridPane gridPane;
     private BorderPane borderPane;
-    private Button add,remove,offset,vacation,month,save,load;
-    static HashSet<Connection> connections=new HashSet<>();
-    static myHashSet<Worker> workers=new myHashSet<>();
-    static Integer weekday=0;
+    private Button add,remove,offset,vacation,month,save,load,change;
 
 
-    static void setWeekday(Integer b){
-        weekday=b;
-    }
-
-    static void updateWorker(Worker worker){
-
-
-        workers.removeIf(work -> work.equals(worker));
-        workers.add(worker);
-        updateAllWorkers();
-
-
-    }
-
-    static void handleMain(Worker worker){
-        workers.remove(worker);
-        updateAllWorkers();
-
-
-        connections.removeIf(con -> con.worker.equals(worker));
-
-        cleanLabels();
-        for (Connection connection:connections) {
-            labels[connection.shift.row+1][connection.shift.column].setText(labels[connection.shift.row+1][connection.shift.column].getText().concat(connection.toString())+"\n");
-        }
-
-    }
-    static void updateAllWorkers(){
-        for (Worker worker:workers) {
+    public static void updateAllWorkers(){
+        for (Worker worker: Data.workers) {
             worker.resetMinutes();
-            for (Connection connection:connections) {
-                if (connection.worker==worker)
-                    worker.addMinutes(connection.minutes);
+            for (Connection connection: Data.connections) {
+                if (connection.getWorker() == worker)
+                    worker.addMinutes(connection.getMinutes());
             }
 
         }
 
 
-        ArrayList<Worker> sorted = new ArrayList<>(workers);
+        ArrayList<Worker> sorted = new ArrayList<>(Data.workers);
         sorted.sort(new WorkerComparator());
 
 
-        String ret= "";
-        for (Worker worker : sorted) {
-            ret=ret.concat(worker.toString());
-            ret=ret.concat("\n");
+        bottomText.setText(Helpers.getWorkersString(sorted));
+
+    }
+
+    public static void updateLabels(){
+        MainView.cleanLabels();
+        for (Connection connection: Data.connections) {
+            MainView.labels[connection.getShift().getRow() +1][connection.getShift().getColumn()].setText(MainView.labels[connection.getShift().getRow() +1][connection.getShift().getColumn()].getText().concat(connection.toString())+"\n");
         }
-
-        bottomText.setText(ret);
-
     }
 
     private void ButtonsSetup(){
@@ -93,8 +73,8 @@ public class Main extends Application{
                 GridPane.setConstraints(buttons[j][i],i,2*j+1);
                 buttons[j][i].setOnAction(new SetupHandler());
                 buttons[j][i].setText("v");
-                buttons[j][i].column=i;
-                buttons[j][i].row=j;
+                buttons[j][i].setColumn(i);
+                buttons[j][i].setRow(j);
             }
         }
 
@@ -105,6 +85,7 @@ public class Main extends Application{
         month = new Button("Wybierz dzien tygodnia");
         save = new Button("Zapisz");
         load = new Button("Wczytaj");
+        change = new Button("Zmien");
 
         add.setOnAction(workerHandler);
         remove.setOnAction(workerHandler);
@@ -113,10 +94,10 @@ public class Main extends Application{
         month.setOnAction(setupHandler);
         save.setOnAction(setupHandler);
         load.setOnAction(setupHandler);
-
+        change.setOnAction(setupHandler);
     }
 
-    static void cleanLabels(){
+    private static void cleanLabels(){
         for (int j = 1; j < 4; j++) {
             for (int i = 0; i < numberOfDays; i++) {
 
@@ -126,8 +107,8 @@ public class Main extends Application{
         }
     }
 
-    static void clearDay(int shift, int day){
-        connections.removeIf(con -> con.shift.equals(new Shift(shift-1,day)));
+    public static void clearDay(int shift, int day){
+        Data.connections.removeIf(con -> con.getShift().equals(new Shift(shift-1,day)));
         updateAllWorkers();
         labels[shift][day].setText("");
 
@@ -176,7 +157,7 @@ public class Main extends Application{
     private void BorderPaneSetup(){
         borderPane=new BorderPane();
 
-        ToolBar toolBar = new ToolBar(add, remove, offset,vacation, month,save,load);
+        ToolBar toolBar = new ToolBar(add, remove, offset,vacation, month,save,load,change);
 
         borderPane.setTop(toolBar);
         borderPane.setCenter(gridPane);
@@ -205,7 +186,7 @@ public class Main extends Application{
     public void start(Stage window) throws Exception {
         window.setOnCloseRequest(e -> {
                     e.consume();
-                    if(Alert.display("100%?", "Czy chcesz zamknac aplikacje?"))
+                    if(ExitWindow.display("100%?", "Czy chcesz zamknac aplikacje?"))
                         window.close();
                 }
         );

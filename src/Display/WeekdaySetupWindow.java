@@ -1,3 +1,5 @@
+package Display;
+
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.Pos;
@@ -11,7 +13,7 @@ import javafx.stage.Stage;
 
 import java.util.ArrayList;
 
-public class SetupWindow {
+public class WeekdaySetupWindow {
     private static Integer dayIndex;
 
     public static Integer weekday(){
