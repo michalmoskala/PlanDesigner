@@ -27,7 +27,7 @@ public class ExitWindow {
         Button closeButton1 = new Button ("Zapisz zmiany");
         closeButton1.setOnAction(e-> {
             window.close();
-            FileManager.save(Helpers.getVersion(),"Workers.txt","Connections.txt",false);
+            FileManager.save(Helpers.getVersion(),"Workers.txt",false);
             ans = true;
         });
 

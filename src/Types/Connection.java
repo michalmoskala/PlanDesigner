@@ -25,7 +25,7 @@ public class Connection {
 
     @Override
     public String toString(){
-        if (Data.isSetup)
+        if (Data.timeVisible)
             return worker.getNick() + ":  (" + Helpers.convertTime(minutes)+"}";
         else
             return worker.getNick();

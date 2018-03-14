@@ -7,9 +7,9 @@ import Types.Worker;
 import java.util.HashSet;
 
 public class Data {
-    public static HashSet<Connection> connections=new HashSet<>();
-    public static HashSet<Worker> workers=new HashSet<>();
-    static public Boolean isSetup=false;
+    public static HashSet<Connection> connections = new HashSet<>();
+    public static HashSet<Worker> workers = new HashSet<>();
+    static public Boolean timeVisible = false;
     private static Integer weekday=0;
 
     public static void setWeekday(Integer b){

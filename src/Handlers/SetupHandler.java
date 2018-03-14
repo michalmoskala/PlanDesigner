@@ -1,17 +1,22 @@
 package Handlers;
 
+import Display.FileView;
 import Processing.Data;
 import Display.MainView;
 import Processing.Helpers;
-import Types.Connection;
 import Display.WeekdaySetupWindow;
 import Processing.FileManager;
 import Processing.myButton;
+import Types.Connection;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.control.Button;
 
+
+import java.io.File;
+
 import static Display.ShiftSelector.display;
+
 
 public class SetupHandler implements EventHandler<ActionEvent> {
     @Override
@@ -32,10 +37,9 @@ public class SetupHandler implements EventHandler<ActionEvent> {
                 MainView.updateAllWorkers();
 
                 if (!Data.connections.isEmpty())
-                   MainView.updateLabels();
+                    MainView.updateLabels();
             }
 
-            FileManager.save("--------","bworkers.txt","bcons.txt",true);
         }
 
         else if(a.getText().equals("Wybierz dzien tygodnia"))
@@ -47,17 +51,20 @@ public class SetupHandler implements EventHandler<ActionEvent> {
 
         else if(a.getText().equals("Zapisz"))
         {
-            FileManager.save(Helpers.getVersion(),"Workers.txt","Connections.txt",false);
+            FileManager.save(Helpers.getVersion(),"Workers.txt",false);
             MainView.updateAllWorkers();
         }
 
         else if(a.getText().equals("Wczytaj"))
         {
-            FileManager.load();
+
+            File file = FileView.load();
+            if (file != null)
+            FileManager.load(file);
         }
         else if(a.getText().equals("Zmien"))
         {
-            Data.isSetup=!Data.isSetup;
+            Data.timeVisible =!Data.timeVisible;
 
             if (!Data.connections.isEmpty())
                 MainView.updateLabels();

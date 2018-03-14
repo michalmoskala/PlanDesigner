@@ -4,7 +4,7 @@ import Processing.*;
 import Types.Connection;
 import Types.Shift;
 import Types.Worker;
-import Handlers.LabelHandler;
+import Handlers.ConnectionHandler;
 import Handlers.SetupHandler;
 import Handlers.WorkerHandler;
 import javafx.application.Application;
@@ -32,7 +32,6 @@ public class MainView extends Application{
     private GridPane gridPane;
     private BorderPane borderPane;
     private Button add,remove,offset,vacation,month,save,load,change;
-
 
     public static void updateAllWorkers(){
         for (Worker worker: Data.workers) {
@@ -141,7 +140,7 @@ public class MainView extends Application{
         for (int j = 1; j < 4; j++) {
             for (int i = 0; i < numberOfDays; i++) {
 
-                labels[j][i].setOnMouseClicked(new LabelHandler());
+                labels[j][i].setOnMouseClicked(new ConnectionHandler());
 
             }
         }
@@ -208,6 +207,8 @@ public class MainView extends Application{
         Scene scene1 = new Scene(borderPane, width + 25, height + 25);
         window.setScene(scene1);
         window.show();
+
+
 
     }
 
