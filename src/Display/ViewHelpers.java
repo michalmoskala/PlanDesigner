@@ -14,34 +14,34 @@ import java.util.HashSet;
 class ViewHelpers {
     static ComboBox<Integer> prepareComboBoxInteger(int stop, int step, double lenLimit)
     {
-        ArrayList<Integer> arrayListHours = new ArrayList<>();
+        ArrayList<Integer> arrayList = new ArrayList<>();
 
         for (int i=0;i<=stop;i+=step){
-            arrayListHours.add(i);
+            arrayList.add(i);
         }
 
-        ObservableList<Integer> optionsHours = FXCollections.observableArrayList(arrayListHours);
-        ComboBox<Integer> comboHours=new ComboBox<>(optionsHours);
-        comboHours.setMinWidth(160-lenLimit);
-        return comboHours;
+        ObservableList<Integer> options = FXCollections.observableArrayList(arrayList);
+        ComboBox<Integer> comboBox=new ComboBox<>(options);
+        comboBox.setMinWidth(160-lenLimit);
+        return comboBox;
     }
 
     static ComboBox<String> prepareComboBoxString(HashSet<Worker> workers, double lenLimit)
     {
-        ArrayList<Worker> arrayListWorkers=new ArrayList<>(workers);
+        ArrayList<Worker> arrayList=new ArrayList<>(workers);
 
-        arrayListWorkers.sort(new WorkerComparator());
+        arrayList.sort(new WorkerComparator());
         ArrayList<String> arrayListStrings = new ArrayList<>();
 
-        for (Worker worker :arrayListWorkers){
+        for (Worker worker :arrayList){
             arrayListStrings.add(worker.getNick());
         }
 
-        ObservableList<String> optionsWorkers = FXCollections.observableArrayList(arrayListStrings);
-        ComboBox<String> comboWorkers=new ComboBox<>(optionsWorkers);
+        ObservableList<String> options = FXCollections.observableArrayList(arrayListStrings);
+        ComboBox<String> comboBox=new ComboBox<>(options);
         if (lenLimit!=0)
-            comboWorkers.setMinWidth(160-lenLimit);
-        return comboWorkers;
+            comboBox.setMinWidth(160-lenLimit);
+        return comboBox;
     }
 
     static GridPane setupLayout(GridPane layout)

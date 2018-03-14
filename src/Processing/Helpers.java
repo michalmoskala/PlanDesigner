@@ -1,14 +1,7 @@
 package Processing;
 
 import Types.Worker;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
-import javafx.geometry.Pos;
-import javafx.scene.control.ComboBox;
-import javafx.scene.layout.GridPane;
-
 import java.util.ArrayList;
-import java.util.HashSet;
 
 public class Helpers {
 
@@ -49,7 +42,7 @@ public class Helpers {
             ret = "-";
             time=-time;
         }
-        ret=ret.concat(time/60 + ":" + Integer.toString(time-(60*(time/60))));
+        ret=ret.concat(String.format("%d:%02d",time/60,(time-(60*(time/60)))));
 
         return ret;
 
