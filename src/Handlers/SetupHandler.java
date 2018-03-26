@@ -4,7 +4,6 @@ import Display.FileView;
 import Processing.Data;
 import Display.MainView;
 import Processing.Helpers;
-import Display.WeekdaySetupWindow;
 import Processing.FileManager;
 import Processing.myButton;
 import Types.Connection;
@@ -34,7 +33,7 @@ public class SetupHandler implements EventHandler<ActionEvent> {
             if(input!=null) {
                 Data.connections.add(input);
 
-                MainView.updateAllWorkers();
+                Data.updateAllWorkers();
 
                 if (!Data.connections.isEmpty())
                     MainView.updateLabels();
@@ -42,25 +41,18 @@ public class SetupHandler implements EventHandler<ActionEvent> {
 
         }
 
-        else if(a.getText().equals("Wybierz dzien tygodnia"))
-        {
-            Integer b= WeekdaySetupWindow.weekday();
-            Data.setWeekday(b);
-
-        }
-
         else if(a.getText().equals("Zapisz"))
         {
             FileManager.save(Helpers.getVersion(),"Workers.txt",false);
-            MainView.updateAllWorkers();
+            Data.updateAllWorkers();
         }
 
         else if(a.getText().equals("Wczytaj"))
         {
+//            File file = FileView.load();
+//            if (file != null)
+//            FileManager.load(file);
 
-            File file = FileView.load();
-            if (file != null)
-            FileManager.load(file);
         }
         else if(a.getText().equals("Zmien"))
         {

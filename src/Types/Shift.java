@@ -3,10 +3,16 @@ package Types;
 public class Shift {
     int row;
     int column;
+    private boolean special;
 
-    public Shift(int row, int column) {
+    public void switchSpecial(){
+        special=!special;
+
+    }
+    public Shift(int row, int column, boolean special) {
         this.row = row;
         this.column = column;
+        this.special = special;
     }
 
     public int getRow() {

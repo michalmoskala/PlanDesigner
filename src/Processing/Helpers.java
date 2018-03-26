@@ -1,5 +1,6 @@
 package Processing;
 
+import Types.Month;
 import Types.Worker;
 import java.util.ArrayList;
 
@@ -34,7 +35,7 @@ public class Helpers {
     }
 
 
-    public static String convertTime(int time)
+    public static String convertTimeToHours(int time)
     {
         String ret= "";
         if (time<0)
@@ -45,6 +46,13 @@ public class Helpers {
         ret=ret.concat(String.format("%d:%02d",time/60,(time-(60*(time/60)))));
 
         return ret;
+
+    }
+
+    public static String convertTimeToDays(int time)
+    {
+        time /= 455;
+        return Integer.toString(time);
 
     }
 
@@ -59,5 +67,11 @@ public class Helpers {
 
     }
 
+
+    public static Boolean checkIfSpecial (int initDay,int currentDay)
+    {
+        int weekDay = (currentDay%7+initDay)%7;
+        return weekDay == 5 || weekDay == 6;
+    }
 
 }

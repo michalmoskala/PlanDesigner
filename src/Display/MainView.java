@@ -1,24 +1,25 @@
 package Display;
 
-import Processing.*;
-import Types.Connection;
-import Types.Shift;
-import Types.Worker;
 import Handlers.ConnectionHandler;
 import Handlers.SetupHandler;
+import Handlers.SpecialHandler;
 import Handlers.WorkerHandler;
+import Processing.*;
+import Types.Connection;
+import Types.Worker;
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
-import javafx.scene.control.*;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.ToolBar;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 
-import java.util.*;
+import java.io.File;
+import java.util.ArrayList;
 
 
 public class MainView extends Application{
@@ -27,30 +28,12 @@ public class MainView extends Application{
     private static myLabel[][] labels;
     private static myButton[][]buttons;
     private static int numberOfDays = 31;
-    private int width=1200;
-    private int height=600;
-    private GridPane gridPane;
-    private BorderPane borderPane;
-    private Button add,remove,offset,vacation,month,save,load,change;
+    private static int width=1200;
+    private static int height=600;
+    private static GridPane gridPane;
+    private static BorderPane borderPane;
+    private static Button add,remove,offset,vacation,save,load,change;
 
-    public static void updateAllWorkers(){
-        for (Worker worker: Data.workers) {
-            worker.resetMinutes();
-            for (Connection connection: Data.connections) {
-                if (connection.getWorker() == worker)
-                    worker.addMinutes(connection.getMinutes());
-            }
-
-        }
-
-
-        ArrayList<Worker> sorted = new ArrayList<>(Data.workers);
-        sorted.sort(new WorkerComparator());
-
-
-        bottomText.setText(Helpers.getWorkersString(sorted));
-
-    }
 
     public static void updateLabels(){
         MainView.cleanLabels();
@@ -59,7 +42,7 @@ public class MainView extends Application{
         }
     }
 
-    private void ButtonsSetup(){
+    private static void ButtonsSetup(){
         final WorkerHandler workerHandler=new WorkerHandler();
         final SetupHandler setupHandler=new SetupHandler();
 
@@ -81,16 +64,14 @@ public class MainView extends Application{
         remove=new Button("Usun");
         offset = new Button("Ustaw offset");
         vacation = new Button("Ustaw urlop");
-        month = new Button("Wybierz dzien tygodnia");
         save = new Button("Zapisz");
-        load = new Button("Wczytaj");
+        load = new Button("Wczytaj Pracownikow");
         change = new Button("Zmien");
 
         add.setOnAction(workerHandler);
         remove.setOnAction(workerHandler);
         offset.setOnAction(workerHandler);
         vacation.setOnAction(workerHandler);
-        month.setOnAction(setupHandler);
         save.setOnAction(setupHandler);
         load.setOnAction(setupHandler);
         change.setOnAction(setupHandler);
@@ -107,13 +88,12 @@ public class MainView extends Application{
     }
 
     public static void clearDay(int shift, int day){
-        Data.connections.removeIf(con -> con.getShift().equals(new Shift(shift-1,day)));
-        updateAllWorkers();
+        Data.clearDay(shift,day);
         labels[shift][day].setText("");
 
     }
 
-    private void LabelsSetup(){
+    private static void LabelsSetup(){
         labels = new myLabel[4][numberOfDays];
 
         for (int i = 0; i < numberOfDays; i++) {
@@ -137,6 +117,11 @@ public class MainView extends Application{
             labels[0][i].setMinSize(width / numberOfDays, 30);
         }
 
+        for (int i = 0; i < numberOfDays; i++)
+        {
+            labels[0][i].setOnMouseClicked(new SpecialHandler());
+        }
+
         for (int j = 1; j < 4; j++) {
             for (int i = 0; i < numberOfDays; i++) {
 
@@ -147,16 +132,16 @@ public class MainView extends Application{
 
     }
 
-    private void GridPaneSetup(){
+    private static void GridPaneSetup(){
         gridPane = new GridPane();
         gridPane.setPadding(new Insets(10, 10, 10, 10));
 
     }
 
-    private void BorderPaneSetup(){
+    private static void BorderPaneSetup(){
         borderPane=new BorderPane();
 
-        ToolBar toolBar = new ToolBar(add, remove, offset,vacation, month,save,load,change);
+        ToolBar toolBar = new ToolBar(add, remove, offset,vacation,save,load,change);
 
         borderPane.setTop(toolBar);
         borderPane.setCenter(gridPane);
@@ -166,7 +151,7 @@ public class MainView extends Application{
 
     }
 
-    private void GridPaneAddChildren(){
+    private static void GridPaneAddChildren(){
 
         for (int i = 0; i < 4; i++) {
             gridPane.getChildren().addAll(labels[i]);
@@ -174,6 +159,24 @@ public class MainView extends Application{
         for(int i=0;i<3;i++) {
             gridPane.getChildren().addAll(buttons[i]);
         }
+
+    }
+
+    public static void updateWorkers(ArrayList<Worker> sorted) {
+        MainView.bottomText.setText(Helpers.getWorkersString(sorted));
+    }
+
+    public static void doSetups(){
+
+        numberOfDays=Data.getMonth().getNumberOfDays();
+        GridPaneSetup();
+        ButtonsSetup();
+        LabelsSetup();
+        GridPaneAddChildren();
+        gridPane.setGridLinesVisible(true);
+        BorderPaneSetup();
+        updateLabels();
+        Data.updateAllWorkers();
 
     }
 
@@ -190,29 +193,41 @@ public class MainView extends Application{
                 }
         );
 
+        Data.setMonth(InitialSetupWindow.display());
+        if (Data.getMonth()==null)
+        {
+            File file = FileView.load();
+            if (file != null)
+                FileManager.load(file);
+
+        }
+        else
+        {
+            doSetups();
+            Data.setUpSpecial();
+
+        }
+
+
+
 
         window.setTitle("Plan Designer");
-
-
-        GridPaneSetup();
-        ButtonsSetup();
-        LabelsSetup();
-
-        GridPaneAddChildren();
-
-        gridPane.setGridLinesVisible(true);
-
-        BorderPaneSetup();
-
         Scene scene1 = new Scene(borderPane, width + 25, height + 25);
         window.setScene(scene1);
         window.show();
 
 
 
+
     }
 
 
+    public static void setLabelColors() {
+        for(int i=0;i<numberOfDays;i++)
+            if(Data.getIsSpecial(i))
+                labels[0][i].setStyle("-fx-background-color:red;");
+            else
+                labels[0][i].setStyle("-fx-background-color:white;");
 
-
+    }
 }

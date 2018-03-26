@@ -28,8 +28,8 @@ public class ShiftSelector {
         Label l3=new Label("min");
 
         ComboBox<String> comboWorkers = ViewHelpers.prepareComboBoxString(workers,l1.getWidth());
-        ComboBox<Integer> comboHours = ViewHelpers.prepareComboBoxInteger(12,1,l1.getWidth());
-        ComboBox<Integer> comboMinutes = ViewHelpers.prepareComboBoxInteger(60,5,l1.getWidth());
+        ComboBox<Integer> comboHours = ViewHelpers.prepareComboBoxInteger(12,1,l1.getWidth(),0);
+        ComboBox<Integer> comboMinutes = ViewHelpers.prepareComboBoxInteger(60,5,l1.getWidth(),0);
 
         comboHours.getSelectionModel().select(12);
         comboMinutes.getSelectionModel().select(0);
@@ -44,7 +44,8 @@ public class ShiftSelector {
         Button closeButton1 = new Button ("OK");
         closeButton1.setOnAction(e-> {
             window.close();
-            connection=new Connection(mB.getRow(), mB.getColumn(), Helpers.findWorker(comboWorkers.getValue()),comboHours.getValue()*60+comboMinutes.getValue());
+            connection=new Connection(mB.getRow(), mB.getColumn(), Helpers.findWorker(comboWorkers.getValue()),comboHours.getValue()*60+comboMinutes.getValue(),false);
+            //connection=new Connection(mB.getRow(), mB.getColumn(), Helpers.findWorker(comboWorkers.getValue()),comboHours.getValue()*60+comboMinutes.getValue(),Helpers.checkIfSpecial(mB.getRow(),mB.getColumn()));
         });
 
 

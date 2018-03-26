@@ -3,6 +3,7 @@ package Processing;
 import Display.FileView;
 import Display.MainView;
 import Types.Connection;
+import Types.Month;
 import Types.Worker;
 
 import java.io.*;
@@ -34,17 +35,34 @@ public class FileManager {
 
             Connection connection;
 
+            line=bufferedReader.readLine();
+            String[] words = line.split(";");
+            Data.setMonth(new Month(words[0],words[1]));
+
+            Data.emptySetupSpecial();
+
+            line=bufferedReader.readLine();
+            words=line.split(",");
+            for(String string : words)
+                Data.setSpecial(Integer.parseInt(string));
+
             while  ((line = bufferedReader.readLine()) != null){
 
-                String[] words = line.split(";");
+                words = line.split(";");
                 connection=new Connection(words[0],words[1],words[2],words[3]);
                 Data.connections.add(connection);
 
             }
             fileReader.close();
+            MainView.doSetups();
 
-            MainView.updateAllWorkers();
+            Data.updateAllWorkers();
+
+
             MainView.updateLabels();
+
+            MainView.setLabelColors();
+
 
 
         } catch (IOException e) {
@@ -76,6 +94,10 @@ public class FileManager {
 
 
             out.println("-");
+            out.println(Data.getMonth().getInitialWeekday() + ";" + Data.getMonth().getNumberOfDays());
+
+            out.println(Data.getIsSpecialString());
+
             for (Connection connection: Data.connections)
 
                 out.println(connection.toFile());

@@ -11,6 +11,7 @@ public class myLabel extends Label {
     }
     private int column;
     private int row;
+    private String color;
 
     public int getRow() {
         return row;
@@ -21,6 +22,12 @@ public class myLabel extends Label {
     }
 
 
+    public String getColor() {
+        return color;
+    }
 
+    public void setColor(String color) {
+        this.color = color;
+    }
 }
 

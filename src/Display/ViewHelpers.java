@@ -12,11 +12,11 @@ import java.util.ArrayList;
 import java.util.HashSet;
 
 class ViewHelpers {
-    static ComboBox<Integer> prepareComboBoxInteger(int stop, int step, double lenLimit)
+    static ComboBox<Integer> prepareComboBoxInteger(int stop, int step, double lenLimit,int start)
     {
         ArrayList<Integer> arrayList = new ArrayList<>();
 
-        for (int i=0;i<=stop;i+=step){
+        for (int i=start;i<=stop;i+=step){
             arrayList.add(i);
         }
 

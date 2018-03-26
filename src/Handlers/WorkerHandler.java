@@ -3,7 +3,6 @@ package Handlers;
 import Processing.Data;
 import Types.Worker;
 import Display.WorkerSelector;
-import Display.MainView;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.control.Button;
@@ -20,7 +19,7 @@ public class WorkerHandler implements EventHandler<ActionEvent> {
                 Worker newWorker = WorkerSelector.addWorker();
                 if (newWorker!=null) {
                     Data.workers.add(newWorker);
-                    MainView.updateAllWorkers();
+                    Data.updateAllWorkers();
                 }
             }
 

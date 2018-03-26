@@ -21,7 +21,7 @@ public class WorkerSelector {
         Label l2=new Label("Ile dni?");
 
         ComboBox<String> comboWorkers= ViewHelpers.prepareComboBoxString(workers,l1.getWidth());
-        ComboBox<Integer> comboDays= ViewHelpers.prepareComboBoxInteger(25,1,l1.getWidth());
+        ComboBox<Integer> comboDays= ViewHelpers.prepareComboBoxInteger(25,1,l1.getWidth(),0);
 
 
         window.initModality(Modality.APPLICATION_MODAL);
@@ -71,8 +71,8 @@ public class WorkerSelector {
         window.setOnCloseRequest(e -> worker = null);
 
         ComboBox<String> comboWorkers = ViewHelpers.prepareComboBoxString(workers,l1.getWidth());
-        ComboBox<Integer> comboHours = ViewHelpers.prepareComboBoxInteger(12,1,l1.getWidth());
-        ComboBox<Integer> comboMinutes = ViewHelpers.prepareComboBoxInteger(60,5,l1.getWidth());
+        ComboBox<Integer> comboHours = ViewHelpers.prepareComboBoxInteger(12,1,l1.getWidth(),0);
+        ComboBox<Integer> comboMinutes = ViewHelpers.prepareComboBoxInteger(60,5,l1.getWidth(),0);
 
         window.initModality(Modality.APPLICATION_MODAL);
         window.setTitle("Wybierz");

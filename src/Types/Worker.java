@@ -8,14 +8,19 @@ public class Worker {
     private int minutes;
     private int offset;
     private int vacation;
+    private int specialMinutes;
 
 
-    public void addMinutes(int add){
+    public void addMinutes(int add,boolean isSpecial){
         this.minutes+=add;
+        if (isSpecial)
+            this.specialMinutes+=add;
     }
+
 
     public void resetMinutes() {
         this.minutes = 0;
+        this.specialMinutes=0;
     }
 
     public String toFile(){
@@ -66,8 +71,17 @@ public class Worker {
     public String toString() {
 
         int time=offset+minutes+vacation;
-        return nick + "     " + Helpers.convertTime(time)+"   (Offset: " + Helpers.convertTime(offset) + ", Urlop: " + Helpers.convertTime(vacation) + ") ";
 
+        return String.format("%s     %s   (Przepracowane: %s, Weekendy: %s, Offset: %s, Urlop: %s dni | %s) %s",
+                nick,
+                Helpers.convertTimeToHours(time),
+                Helpers.convertTimeToHours(minutes),
+                Helpers.convertTimeToHours(specialMinutes),
+                Helpers.convertTimeToHours(offset),
+                Helpers.convertTimeToDays(vacation),
+                Helpers.convertTimeToHours(vacation),
+                fullName
+        );
     }
 
     public String getNick(){
